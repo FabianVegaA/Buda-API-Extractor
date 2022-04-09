@@ -1,9 +1,20 @@
 module Main where
 
-import Lib (nameMarkets, getMarkets)
+import Lib
+  ( getMarket,
+    getOrderBook,
+    getTicker,
+    getTradedVolume,
+  )
 
 main :: IO ()
 main = do
-    (Just ms) <- getMarkets
-    print ms
-
+  let market = "btc-clp"
+  market' <- getMarket market
+  print market'
+  tradedVolume <- getTradedVolume market
+  print tradedVolume
+  ticker <- getTicker market
+  print ticker
+  orderBook <- getOrderBook market
+  print orderBook
