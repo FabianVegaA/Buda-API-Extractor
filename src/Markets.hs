@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Types
+module Markets
   ( Market (name),
     Markets (..),
   )
@@ -10,8 +10,6 @@ where
 import Control.Applicative (empty)
 import Data.Aeson (FromJSON, Value (Object), (.:))
 import qualified Data.Aeson as Aeson
-import Data.Aeson.Key ()
-import qualified Data.ByteString.Char8 as S8
 import Data.List (intercalate)
 import Data.Text (Text)
 import qualified Data.Text
@@ -31,7 +29,7 @@ data Market = Market
     rpo_disabled :: Maybe Bool,
     max_orders_per_minute :: Int
   }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance FromJSON Market where
   parseJSON (Object v) =
@@ -55,10 +53,3 @@ instance FromJSON Markets where
     Markets <$> v .: "markets"
   parseJSON _ = empty
 
-instance Show Market where
-  show (Market _ name _ _ min_order_amount _ _ _ _ _ max_orders_per_minute) =
-    Data.Text.unpack name ++ " " ++ show min_order_amount ++ " " ++ show max_orders_per_minute
-
-instance Show Markets where
-  show (Markets markets) =
-    intercalate "\n" $ map show markets
